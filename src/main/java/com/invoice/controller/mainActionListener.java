@@ -5,8 +5,8 @@
  */
 package com.invoice.controller;
 
-import com.invoice.model.invoiceHeader;
-import com.invoice.model.invoiceLine;
+import com.invoice.model.Header;
+import com.invoice.model.Line;
 import com.invoice.model.tableModelInvoiceHead;
 import com.invoice.model.tableModelInvoiceLine;
 import com.invoice.view.InvoiceFrame;
@@ -15,6 +15,7 @@ import com.invoice.view.dialogLine;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +44,8 @@ public class mainActionListener implements ActionListener{
     public mainActionListener(InvoiceFrame invoiceFrame){
         this.invoiceFrame = invoiceFrame; 
     }
+    
+    
 
     @Override
     public void actionPerformed(ActionEvent e) { 
@@ -64,7 +67,7 @@ public class mainActionListener implements ActionListener{
                 deleteInvoice();
                 break;
             case "Cancel Line":
-                Cancel();
+                CancelItems();
                 break;
             case "OKinvoiceH":
                 ok();
@@ -84,6 +87,40 @@ public class mainActionListener implements ActionListener{
         }
     }
 
+   private void saveFiles() {
+        ArrayList<Header>arrinv = invoiceFrame.getArrInvoiceHeader();
+        JFileChooser file = new JFileChooser();
+        try {
+            int r = file.showSaveDialog(invoiceFrame);
+            if (r == JFileChooser.APPROVE_OPTION) {
+                File headerFile = file.getSelectedFile();
+                FileWriter filewriter = new FileWriter(headerFile);
+                String head = "";
+                String line = "";
+                for (Header inv : arrinv) {
+                    head += inv.toString();
+                    head += "\n";
+                    for (Line lines : inv.getInvoiceLines()) {
+                        line += lines.toString();
+                        line += "\n";
+                    }
+                }
+         
+                head = head.substring(0, head.length()-1);
+                line = line.substring(0, line.length()-1);
+                r = file.showSaveDialog(invoiceFrame);
+                File fileline = file.getSelectedFile();
+                FileWriter linefilewriter = new FileWriter(fileline);
+                filewriter.write(head);
+                linefilewriter.write(line);
+                filewriter.close();
+                linefilewriter.close();
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(invoiceFrame, ex.getMessage(), "error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     private void loadFiles() {
         JFileChooser fileChooser = new JFileChooser();
         try{
@@ -92,7 +129,7 @@ public class mainActionListener implements ActionListener{
                 File Header = fileChooser.getSelectedFile();
                 Path headerPath = Paths.get(Header.getAbsolutePath());
                 java.util.List<String> headerLines =Files.readAllLines(headerPath);
-                ArrayList<invoiceHeader>invoiceHeaders=new ArrayList<>();
+                ArrayList<Header>invoiceHeaders=new ArrayList<>();
                 for(String headerLine : headerLines ){
                     String[] HeaderLines = headerLine.split(",");
                     String HeaderLines1 = HeaderLines[0];
@@ -100,7 +137,7 @@ public class mainActionListener implements ActionListener{
                     String HeaderLines3 = HeaderLines[2];
                     int id = Integer.parseInt(HeaderLines1);
                     Date dateHeader = dateFormat.parse(HeaderLines2);      
-                    invoiceHeader headers = new invoiceHeader(id,HeaderLines3,dateHeader);
+                    Header headers = new Header(id,HeaderLines3,dateHeader);
                     invoiceHeaders.add(headers);
                
                 }
@@ -110,7 +147,7 @@ public class mainActionListener implements ActionListener{
                      File Lines = fileChooser.getSelectedFile();
                      Path linePath = Paths.get(Lines.getAbsolutePath());
                      java.util.List<String> invLines =Files.readAllLines(linePath);
-                     ArrayList<invoiceLine>invoiceLines=new ArrayList<>();
+                     ArrayList<Line>invoiceLines=new ArrayList<>();
                      for(String invLine:invLines){
                         String[] invLinee = invLine.split(",");
                         String arr1 = invLinee[0];//no
@@ -120,10 +157,10 @@ public class mainActionListener implements ActionListener{
                         int id = Integer.parseInt(arr1);
                         double price = Double.parseDouble(arr3);
                         int count = Integer.parseInt(arr4);
-                        invoiceHeader invheader = invoiceFrame.getItems(id);
+                        Header invheader = invoiceFrame.getItems(id);
                         //invoiceLine line = new invoiceLine(arr4, price, count, invheader);
                         //invheader.getInvoiceLines().add(line);
-                        invoiceLine InvoiceLine = new invoiceLine(arr2,price,count,invheader);
+                        Line InvoiceLine = new Line(arr2,price,count,invheader);
                         invheader.getInvoiceLines().add(InvoiceLine);
 
                      }
@@ -141,9 +178,7 @@ public class mainActionListener implements ActionListener{
             JOptionPane.showMessageDialog(invoiceFrame, ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
         }}
 
-    private void saveFiles() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
     private void createNewInvoice() {
         dialogheader = new dialogHeader(invoiceFrame);
@@ -166,13 +201,16 @@ public class mainActionListener implements ActionListener{
     }
     
 
+    
+    
+    
     private void CreateInvoiceItems() {
         dialogline = new dialogLine(invoiceFrame);
         dialogline.setVisible(true);
         
     }
 
-    private void Cancel() {
+    private void CancelItems() {
         
         if (invoiceFrame.getLineTBL().getSelectedRow() != -1) {
             invoiceFrame.getArrInvoiceLine().remove(invoiceFrame.getLineTBL().getSelectedRow());
@@ -185,6 +223,11 @@ public class mainActionListener implements ActionListener{
  
     }
 
+    
+    
+    
+    
+    
     private void ok() {
         dialogheader.setVisible(false);
         String customerName = dialogheader.getCustomerNameF().getText();
@@ -196,13 +239,13 @@ public class mainActionListener implements ActionListener{
             JOptionPane.showMessageDialog(invoiceFrame, "error date","invalid",JOptionPane.ERROR_MESSAGE);   
         }
         int Number = 0;
-        for (invoiceHeader invH : invoiceFrame.getArrInvoiceHeader()) {
+        for (Header invH : invoiceFrame.getArrInvoiceHeader()) {
             if (invH.getNumber() > Number) {
                 Number = invH.getNumber();
             }
         }
         Number++;
-        invoiceHeader InvoiceHeader= new invoiceHeader(Number, customerName, datee);
+        Header InvoiceHeader= new Header(Number, customerName, datee);
         invoiceFrame.getArrInvoiceHeader().add(InvoiceHeader);
         invoiceFrame.getTableModelInvoice().fireTableDataChanged();
       
@@ -216,6 +259,14 @@ public class mainActionListener implements ActionListener{
         dialogheader = null;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
     private void okLine() {
         dialogline.setVisible(false);
         
@@ -237,8 +288,8 @@ public class mainActionListener implements ActionListener{
         }
         int selectedHeader = invoiceFrame.getHeaderTBL().getSelectedRow();
         if (selectedHeader != -1) {
-            invoiceHeader Header = invoiceFrame.getArrInvoiceHeader().get(selectedHeader);
-            invoiceLine line = new invoiceLine(nameitem, Price, c, Header);
+            Header Header = invoiceFrame.getArrInvoiceHeader().get(selectedHeader);
+            Line line = new Line(nameitem, Price, c, Header);
             //invHeader.getLines().add(line);
             invoiceFrame.getArrInvoiceLine().add(line);
             tableModelInvoiceLine lineTableModel = (tableModelInvoiceLine) invoiceFrame.getLineTBL().getModel();
