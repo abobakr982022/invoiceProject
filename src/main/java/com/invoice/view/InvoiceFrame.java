@@ -121,6 +121,7 @@ public class InvoiceFrame extends javax.swing.JFrame {
 
         CreateInvoiceItems.setText("Create Invoice Items");
         CreateInvoiceItems.setActionCommand("Create Invoice Items");
+        CreateInvoiceItems.addActionListener(menuAction);
         CreateInvoiceItems.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CreateInvoiceItemsActionPerformed(evt);
@@ -128,6 +129,7 @@ public class InvoiceFrame extends javax.swing.JFrame {
         });
 
         CancelLine.setText("Cancel Line");
+        CancelLine.addActionListener(menuAction);
 
         jLabel9.setText("Invoice Items");
 

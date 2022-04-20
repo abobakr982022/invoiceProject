@@ -112,17 +112,17 @@ public class mainActionListener implements ActionListener{
                      ArrayList<invoiceLine>invoiceLines=new ArrayList<>();
                      for(String invLine:invLines){
                         String[] invLinee = invLine.split(",");
-                        String arr1 = invLinee[0];
-                        String arr2 = invLinee[1];
-                        String arr3 = invLinee[2];
-                        String arr4 = invLinee[3];
+                        String arr1 = invLinee[0];//no
+                        String arr2 = invLinee[1];//nameitem
+                        String arr3 = invLinee[2];//cost
+                        String arr4 = invLinee[3];//count
                         int id = Integer.parseInt(arr1);
                         double price = Double.parseDouble(arr3);
                         int count = Integer.parseInt(arr4);
                         invoiceHeader invheader = invoiceFrame.getItems(id);
                         //invoiceLine line = new invoiceLine(arr4, price, count, invheader);
                         //invheader.getInvoiceLines().add(line);
-                        invoiceLine InvoiceLine = new invoiceLine(arr4,price,count,invheader);
+                        invoiceLine InvoiceLine = new invoiceLine(arr2,price,count,invheader);
                         invheader.getInvoiceLines().add(InvoiceLine);
 
                      }
@@ -172,9 +172,16 @@ public class mainActionListener implements ActionListener{
     }
 
     private void Cancel() {
-        dialogheader.setVisible(false);
-        dialogheader.dispose();
-        dialogheader = null;
+        
+        if (invoiceFrame.getLineTBL().getSelectedRow() != -1) {
+            invoiceFrame.getArrInvoiceLine().remove(invoiceFrame.getLineTBL().getSelectedRow());
+            tableModelInvoiceLine lineModel = (tableModelInvoiceLine) invoiceFrame.getLineTBL().getModel();
+            lineModel.fireTableDataChanged();
+            invoiceFrame.getInvTL().setText(""+invoiceFrame.getArrInvoiceHeader().get(invoiceFrame.getHeaderTBL().getSelectedRow()).getInvoiceTotalPrice());
+            invoiceFrame.getTableModelInvoice().fireTableDataChanged();
+            invoiceFrame.getHeaderTBL().setRowSelectionInterval(invoiceFrame.getHeaderTBL().getSelectedRow(), invoiceFrame.getHeaderTBL().getSelectedRow());
+    }
+ 
     }
 
     private void ok() {
@@ -203,19 +210,49 @@ public class mainActionListener implements ActionListener{
     }
 
     private void cancelinvoice() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        dialogheader.setVisible(false);
+        dialogheader.dispose();
+        dialogheader = null;
     }
 
     private void okLine() {
         dialogline.setVisible(false);
+        
+        String nameitem = dialogline.getItemNameF().getText();
+        String countitem = dialogline.getItemCountF().getText();
+        String priceitem = dialogline.getItemPriceF().getText();
+        int c = 1;
+        double Price = 1;
+        try {
+            c = Integer.parseInt(countitem);
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(invoiceFrame, "error", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        try {
+            Price = Double.parseDouble(priceitem);
+        } catch(NumberFormatException ex) {
+            JOptionPane.showMessageDialog(invoiceFrame, "error", "Invalid", JOptionPane.ERROR_MESSAGE);
+        }
+        int selectedHeader = invoiceFrame.getHeaderTBL().getSelectedRow();
+        if (selectedHeader != -1) {
+            invoiceHeader Header = invoiceFrame.getArrInvoiceHeader().get(selectedHeader);
+            invoiceLine line = new invoiceLine(nameitem, Price, c, Header);
+            //invHeader.getLines().add(line);
+            invoiceFrame.getArrInvoiceLine().add(line);
+            tableModelInvoiceLine lineTableModel = (tableModelInvoiceLine) invoiceFrame.getLineTBL().getModel();
+            lineTableModel.fireTableDataChanged();
+            invoiceFrame.getTableModelInvoice().fireTableDataChanged();
+        }
+        invoiceFrame.getHeaderTBL().setRowSelectionInterval(selectedHeader, selectedHeader);
         dialogline.dispose();
-        dialogline=null;
+        dialogline = null;
     }
 
     private void cancelinvoiceline() {
         dialogline.setVisible(false);
         dialogline.dispose();
-        dialogline=null;
+        dialogline = null;
     }
     
 }

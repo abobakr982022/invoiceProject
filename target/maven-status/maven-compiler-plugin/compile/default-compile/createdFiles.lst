@@ -11,4 +11,5 @@ com\invoice\view\InvoiceFrame$4.class
 com\invoice\view\InvoiceFrame$1.class
 com\invoice\view\InvoiceFrame.class
 com\invoice\model\invoiceHeader.class
+.netbeans_automatic_build
 com\invoice\view\InvoiceFrame$5.class
