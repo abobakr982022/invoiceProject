@@ -11,7 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
- *
+
  * @author aboba
  */
 public class dialogHeader extends JDialog {
