@@ -12,9 +12,9 @@ import javax.swing.table.AbstractTableModel;
  * @author aboba
  */
 public class tableModelInvoiceHead extends AbstractTableModel{
-    private ArrayList<invoiceHeader> arrInvoiceHeader;
+    private ArrayList<Header> arrInvoiceHeader;
 
-    public tableModelInvoiceHead(ArrayList<invoiceHeader> arrInvoiceHeader) {
+    public tableModelInvoiceHead(ArrayList<Header> arrInvoiceHeader) {
         this.arrInvoiceHeader = arrInvoiceHeader;
     }
 
@@ -31,7 +31,7 @@ public class tableModelInvoiceHead extends AbstractTableModel{
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        invoiceHeader invHeaders = arrInvoiceHeader.get(rowIndex);
+        Header invHeaders = arrInvoiceHeader.get(rowIndex);
         switch (columnIndex){
             case 0:return  invHeaders.getNumber();
             case 1:return  InvoiceFrame.dateformat.format(invHeaders.getInvoiceDate());

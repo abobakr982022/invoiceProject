@@ -6,8 +6,8 @@ package com.invoice.view;
 
 import com.invoice.controller.mainActionListener;
 import com.invoice.controller.selListener;
-import com.invoice.model.invoiceHeader;
-import com.invoice.model.invoiceLine;
+import com.invoice.model.Header;
+import com.invoice.model.Line;
 import com.invoice.model.tableModelInvoiceHead;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -322,19 +322,19 @@ public class InvoiceFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
 private mainActionListener menuAction = new mainActionListener(this);
-private ArrayList<invoiceHeader> arrInvoiceHeader;
-private ArrayList<invoiceLine> arrInvoiceLine;
+private ArrayList<Header> arrInvoiceHeader;
+private ArrayList<Line> arrInvoiceLine;
 private tableModelInvoiceHead TableModelInvoice;
 private selListener sellistener = new selListener(this);
 public static SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
 
 
-    public void setArrInvoice(ArrayList<invoiceHeader> arrInvoiceHeader) {
+    public void setArrInvoice(ArrayList<Header> arrInvoiceHeader) {
         this.arrInvoiceHeader = arrInvoiceHeader;
     }
     
-    public invoiceHeader getItems(int id){
-        for (invoiceHeader invH : arrInvoiceHeader){
+    public Header getItems(int id){
+        for (Header invH : arrInvoiceHeader){
             if(invH.getNumber()==id){
                 return invH;
             }
@@ -367,7 +367,7 @@ public static SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
         this.LineTBL = LineTBL;
     }
 
-    public ArrayList<invoiceHeader> getArrInvoiceHeader() {
+    public ArrayList<Header> getArrInvoiceHeader() {
         return arrInvoiceHeader;
     }
 
@@ -443,11 +443,11 @@ public static SimpleDateFormat dateformat = new SimpleDateFormat("dd-MM-yyyy");
         this.menuAction = menuAction;
     }
 
-    public ArrayList<invoiceLine> getArrInvoiceLine() {
+    public ArrayList<Line> getArrInvoiceLine() {
         return arrInvoiceLine;
     }
 
-    public void setArrInvoiceLine(ArrayList<invoiceLine> arrInvoiceLine) {
+    public void setArrInvoiceLine(ArrayList<Line> arrInvoiceLine) {
         this.arrInvoiceLine = arrInvoiceLine;
     }
     

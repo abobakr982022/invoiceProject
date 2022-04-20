@@ -11,19 +11,19 @@ import java.util.Date;
  *
  * @author aboba
  */
-public class invoiceHeader {
+public class Header {
     private int Number;
     private String customerName;
     private Date invoiceDate;
-    private ArrayList<invoiceLine> invoiceLines  ;
+    private ArrayList<Line> invoiceLines  ;
 
-    public invoiceHeader(int Number, String customerName, Date invoiceDate) {
+    public Header(int Number, String customerName, Date invoiceDate) {
         this.Number = Number;
         this.customerName = customerName;
         this.invoiceDate = invoiceDate;
     }
 
-    public invoiceHeader() {
+    public Header() {
     }
 
     public int getNumber() {
@@ -50,7 +50,7 @@ public class invoiceHeader {
         this.invoiceDate = invoiceDate;
     }
     
-    public ArrayList<invoiceLine> getInvoiceLines() {
+    public ArrayList<Line> getInvoiceLines() {
         if(invoiceLines==null){
             invoiceLines=new ArrayList<>();
   
@@ -58,7 +58,7 @@ public class invoiceHeader {
         return invoiceLines;
     }
 
-    public void setInvoiceLines(ArrayList<invoiceLine> invoiceLines) {
+    public void setInvoiceLines(ArrayList<Line> invoiceLines) {
         this.invoiceLines = invoiceLines;
     }
     
@@ -73,7 +73,7 @@ public class invoiceHeader {
 
     @Override
     public String toString() {
-        return "invoiceHeader{" + "Number=" + Number + ", customerName=" + customerName + ", invoiceDate=" + invoiceDate + '}';
+        return  Number+","+invoiceDate+","+customerName;
     }
      
      

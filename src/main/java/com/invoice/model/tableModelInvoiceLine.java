@@ -12,9 +12,9 @@ import javax.swing.table.AbstractTableModel;
  * @author aboba
  */
 public class tableModelInvoiceLine extends AbstractTableModel {
-        private ArrayList<invoiceLine> arrInvoiceLine;
+        private ArrayList<Line> arrInvoiceLine;
 
-    public tableModelInvoiceLine(ArrayList<invoiceLine> arrInvoiceLine) {
+    public tableModelInvoiceLine(ArrayList<Line> arrInvoiceLine) {
         this.arrInvoiceLine = arrInvoiceLine;
     }
         
@@ -47,7 +47,7 @@ public class tableModelInvoiceLine extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-          invoiceLine invLine = arrInvoiceLine.get(rowIndex);
+          Line invLine = arrInvoiceLine.get(rowIndex);
         switch (columnIndex){
             case 0:return  invLine.getNumber().getNumber();
             case 1:return  invLine.getNameItems();
@@ -60,11 +60,11 @@ public class tableModelInvoiceLine extends AbstractTableModel {
         return "";
     }
 
-    public ArrayList<invoiceLine> getArrInvoiceLine() {
+    public ArrayList<Line> getArrInvoiceLine() {
         return arrInvoiceLine;
     }
 
-    public void setArrInvoiceLine(ArrayList<invoiceLine> arrInvoiceLine) {
+    public void setArrInvoiceLine(ArrayList<Line> arrInvoiceLine) {
         this.arrInvoiceLine = arrInvoiceLine;
     }
     

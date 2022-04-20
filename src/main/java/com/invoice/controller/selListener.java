@@ -4,8 +4,8 @@
  */
 package com.invoice.controller;
 
-import com.invoice.model.invoiceHeader;
-import com.invoice.model.invoiceLine;
+import com.invoice.model.Header;
+import com.invoice.model.Line;
 import com.invoice.model.tableModelInvoiceLine;
 import com.invoice.view.InvoiceFrame;
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ public class selListener implements ListSelectionListener{
         
         System.out.println("selected"+selInvoiceFrame.getHeaderTBL().getSelectedRow());
         if(selInvoiceFrame.getHeaderTBL().getSelectedRow()!=-1){
-        invoiceHeader selInvoice = selInvoiceFrame.getArrInvoiceHeader().get(selInvoiceFrame.getHeaderTBL().getSelectedRow());
-        ArrayList<invoiceLine> lineee = selInvoiceFrame.getArrInvoiceHeader().get(selInvoiceFrame.getHeaderTBL().getSelectedRow()).getInvoiceLines();
+        Header selInvoice = selInvoiceFrame.getArrInvoiceHeader().get(selInvoiceFrame.getHeaderTBL().getSelectedRow());
+        ArrayList<Line> lineee = selInvoiceFrame.getArrInvoiceHeader().get(selInvoiceFrame.getHeaderTBL().getSelectedRow()).getInvoiceLines();
         tableModelInvoiceLine modelLine = new tableModelInvoiceLine(lineee);
         selInvoiceFrame.setArrInvoiceLine(lineee);
         selInvoiceFrame.getLineTBL().setModel(modelLine);

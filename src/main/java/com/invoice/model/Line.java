@@ -8,42 +8,30 @@ package com.invoice.model;
  *
  * @author aboba
  */ 
-public class invoiceLine {
+public class Line {
     
     private String nameItems;
     private double priceItems;
     private int count;
-    private invoiceHeader number;
+    private Header number;
 
-    public invoiceLine(String nameItems, double priceItems, int count, invoiceHeader number) {
+    public Line(String nameItems, double priceItems, int count, Header number) {
         this.nameItems = nameItems;
         this.priceItems = priceItems;
         this.count = count;
         this.number = number;
     }
 
-    public invoiceLine() {
+    public Line() {
     }
-    
-    
-     
-
-  
-
-   
 
     
 
-//    public invoiceLine(String arr4, double price, int count, invoiceHeader invheader) {
-//        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-//    }
-    
-
-    public invoiceHeader getNumber() {
+    public Header getNumber() {
         return number;
     }
 
-    public void setNumber(invoiceHeader number) {
+    public void setNumber(Header number) {
         this.number = number;
     }
 
@@ -77,7 +65,7 @@ public class invoiceLine {
 
     @Override
     public String toString() {
-        return "invoiceLine{" + "number=" + number + ", nameItems=" + nameItems + ", priceItems=" + priceItems + ", count=" + count + '}';
+        return number.getNumber()+","+nameItems+","+priceItems+","+count;
     }
     
     
